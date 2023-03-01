@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import { config } from 'dotenv'
 import { routes } from './routes'
-import { AppDataSource } from './database'
+import { AppDataSource } from './dataSource'
 import "reflect-metadata"
 
 config()
