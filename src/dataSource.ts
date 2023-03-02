@@ -4,6 +4,7 @@ config()
 
 import { UserAdmin } from "./entity/UserAdmin"
 import { fixUserColumn1677683113088 } from "./migration/1677683113088-fixUserColumn"
+import { addUserRole1677769862111 } from "./migration/1677769862111-addUserRole"
 const DB_PORT : number = Number(process.env.DB_PORT)
 const DB_TYPE : any = process.env.DB_TYPE
 
@@ -16,5 +17,8 @@ export const AppDataSource: DataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: true,
     entities: [UserAdmin],
-    migrations: [fixUserColumn1677683113088]
+    migrations: [
+        fixUserColumn1677683113088,
+        addUserRole1677769862111
+    ]
 })

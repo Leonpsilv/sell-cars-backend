@@ -16,4 +16,7 @@ export class UserAdmin {
 
     @Column()
     Cpf!: string
+
+    @Column("varchar", { length: 150, default: "--"})
+    Role?: string
 }
