@@ -1,13 +1,10 @@
 import { Router } from "express";
-import { adminController } from "../controllers/adminController";
+import { authService } from "../auth/authService";
 import { publicController } from '../controllers/publicController';
+import { adminRoutes } from "./admin";
 
 export const routes: Router = Router()
 
-routes.get('/login', publicController.login)
+routes.use('/admin', authService, adminRoutes)
 
-routes.post('/cadastrar', adminController.newUser) // private
-routes.put('/editar/:cpf', adminController.editUser) // private
-routes.delete('/deletar/:cpf', adminController.deleteUser) // private
-routes.get('/usuario/:name', adminController.getUser) // private
-routes.get('/usuario', adminController.getAllUsers) // private
+routes.get('/login', publicController.login)
