@@ -9,5 +9,5 @@ export class CarPhoto{
     Name!: string
     
     @Column()
-    Link!: string
+    Url!: string
 }

@@ -8,6 +8,7 @@ import { addUserRole1677769862111 } from "./migration/1677769862111-addUserRole"
 import { Car } from "./entity/Car"
 import { CarPhoto } from "./entity/CarPhoto"
 import { changeCarPhotoColumnName1677793535972 } from "./migration/1677793535972-changeCarPhotoColumnName"
+import { addCarColumn1677857365100 } from "./migration/1677857365100-addCarColumn"
 const DB_PORT : number = Number(process.env.DB_PORT)
 const DB_TYPE : any = process.env.DB_TYPE
 
@@ -27,6 +28,7 @@ export const AppDataSource: DataSource = new DataSource({
     migrations: [
         fixUserColumn1677683113088,
         addUserRole1677769862111,
-        changeCarPhotoColumnName1677793535972
+        changeCarPhotoColumnName1677793535972,
+        addCarColumn1677857365100
     ]
 })

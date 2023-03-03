@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { adminController } from "../controllers/adminController";
-import { fileController } from "../controllers/fileController";
+import { carController } from "../controllers/carController";
 
 import multer from 'multer';
 import { multerConfig } from "../services/multer/multerConfig";
@@ -13,4 +13,5 @@ adminRoutes.delete('/deletar/:cpf', adminController.deleteUser)
 adminRoutes.get('/usuario/:name', adminController.getUser)
 adminRoutes.get('/usuario', adminController.getAllUsers)
 
-adminRoutes.post("/posts", multer(multerConfig).single("file"), fileController.saveFile);
+adminRoutes.post("/carros/foto/:carId", multer(multerConfig).single("file"), carController.newCarPhoto);
+adminRoutes.post("/carros/novo", carController.newCar);

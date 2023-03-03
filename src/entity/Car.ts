@@ -18,6 +18,9 @@ export class Car {
     @Column()
     Price!: number
 
+    @Column()
+    Description!: string
+
     @OneToOne(() => CarPhoto)
     @JoinColumn()
     carPhoto!: CarPhoto
