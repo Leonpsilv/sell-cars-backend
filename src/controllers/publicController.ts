@@ -3,7 +3,7 @@ import { AppDataSource } from "../dataSource";
 import { UserAdmin } from "../entity/UserAdmin";
 
 import { sign } from "jsonwebtoken";
-import { auth } from "../auth";
+import { auth } from "../services/auth";
 
 export const publicController = {
     async login(req: Request, res: Response) {

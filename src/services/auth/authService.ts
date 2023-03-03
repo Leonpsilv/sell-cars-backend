@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { auth } from '.'
-import { AppDataSource } from '../dataSource'
-import { UserAdmin } from '../entity/UserAdmin'
+import { AppDataSource } from '../../dataSource'
+import { UserAdmin } from '../../entity/UserAdmin'
 
 export const authService = async (req: Request| any, res: Response, next: NextFunction) => {
         try {
