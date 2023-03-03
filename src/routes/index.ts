@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authService } from "../auth/authService";
+import { authService } from "../services/auth/authService";
 import { publicController } from '../controllers/publicController';
 import { adminRoutes } from "./admin";
 
