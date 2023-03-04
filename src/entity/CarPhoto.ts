@@ -10,4 +10,7 @@ export class CarPhoto{
     
     @Column()
     Url!: string
+
+    @Column({ length: 255, default: "--"})
+    Key!: string
 }
