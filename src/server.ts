@@ -1,14 +1,15 @@
 import express, { Express } from 'express'
 import { config } from 'dotenv'
+config()
 import { routes } from './routes'
 import { AppDataSource } from './dataSource'
+import cors from 'cors'
 import "reflect-metadata"
 
-config()
 const app: Express = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended : true}));
-
+app.use(cors())
 app.use(routes)
 
 AppDataSource.initialize()

@@ -92,12 +92,12 @@ export const carController = {
     },
 
     async getCarsBySearch (req: Request, res: Response) {
-      const {Search} = req.body
-      if(!Search) return res.status(400).json({error:"Carro nao informado!!"})
+      const {search} = req.params
+      if(!search) return res.status(400).json({error:"Carro nao informado!!"})
 
       const cars = await AppDataSource.manager
-      .query(`SELECT * FROM car WHERE "Name" LIKE '%${Search}%' 
-      OR "Brand" LIKE '%${Search}%' OR "Model" LIKE '%${Search}%'`)
+      .query(`SELECT * FROM car WHERE "Name" LIKE '%${search}%' 
+      OR "Brand" LIKE '%${search}%' OR "Model" LIKE '%${search}%'`)
       return res.status(200).json(cars)
     },
 

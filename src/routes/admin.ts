@@ -15,8 +15,6 @@ adminRoutes.get('/usuario', adminController.getAllUsers)
 
 adminRoutes.post("/carros/foto/:carId", multer(multerConfig).single("file"), carController.carPhoto);
 adminRoutes.post("/carros/novo", carController.newCar);
-adminRoutes.get("/carros", carController.getAllCars);
 adminRoutes.get("/carros/:carId", carController.getCar);
 adminRoutes.put("/carros/:carId", carController.editCar);
 adminRoutes.delete("/carros/:carId", carController.deleteCar);
-adminRoutes.get("/carros/pesquisa/carro", carController.getCarsBySearch);
