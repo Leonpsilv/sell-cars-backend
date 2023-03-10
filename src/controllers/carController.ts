@@ -12,6 +12,7 @@ export const carController = {
         photo.Name = name
         photo.Url = url
         photo.Key = key
+        
         await AppDataSource.manager.save(photo).then(async photo => {
           const car = await AppDataSource.getRepository(Car).findOneBy({id: carId})
           if(!car) return res.status(400).json({error: "id inválido"})
@@ -63,17 +64,30 @@ export const carController = {
 
     async editCar (req: Request, res: Response) {
       const id = Number(req.params.carId)
-      const {Name, Brand, Model, Price, Description} = req.body
+      const {Name, Brand, Model, Price, Description, Alt} = req.body
 
       if(!id) return res.status(400).json({error:"Carro nao informado"})
 
       const car = await AppDataSource.getRepository(Car).findOneBy({id})
       if(!car) return res.status(400).json({error:"Carro não encontrado"})
-      car.Name = Name
-      car.Brand = Brand
-      car.Description = Description
-      car.Model = Model
-      car.Price = Price
+      if(Name){
+        car.Name = Name
+      }
+      if(Brand){
+        car.Brand = Brand
+      }
+      if(Description){
+        car.Description = Description
+      }
+      if(Model){
+        car.Model = Model
+      }
+      if(Price){
+        car.Price = Price
+      }
+      if(Alt){
+        car.Alt = Alt
+      }
 
       const result = await AppDataSource.getRepository(Car).save(car).catch(e => {
         return res.status(400).json(e)

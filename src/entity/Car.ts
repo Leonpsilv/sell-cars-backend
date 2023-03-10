@@ -21,6 +21,9 @@ export class Car {
     @Column()
     Description!: string
 
+    @Column({ length: 100, default:"--"})
+    Alt!: string
+
     @OneToOne(() => CarPhoto)
     @JoinColumn()
     carPhoto!: CarPhoto

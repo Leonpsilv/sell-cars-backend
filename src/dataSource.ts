@@ -10,6 +10,8 @@ import { CarPhoto } from "./entity/CarPhoto"
 import { changeCarPhotoColumnName1677793535972 } from "./migration/1677793535972-changeCarPhotoColumnName"
 import { addCarColumn1677857365100 } from "./migration/1677857365100-addCarColumn"
 import { addCarPhotoColumn1677870780249 } from "./migration/1677870780249-addCarPhotoColumn"
+import { newCarColumn1678286429949 } from "./migration/1678286429949-newCarColumn"
+
 const DB_PORT : number = Number(process.env.DB_PORT)
 const DB_TYPE : any = process.env.DB_TYPE
 
@@ -31,6 +33,7 @@ export const AppDataSource: DataSource = new DataSource({
         addUserRole1677769862111,
         changeCarPhotoColumnName1677793535972,
         addCarColumn1677857365100,
-        addCarPhotoColumn1677870780249
+        addCarPhotoColumn1677870780249,
+        newCarColumn1678286429949
     ]
 })
