@@ -34,14 +34,31 @@ export const carController = {
     },
 
     async getAllCars (req: Request, res: Response) {
-      const cars = await AppDataSource.getRepository(Car).find({
-        relations: {
-            carPhoto: true,
-        },
-        order: {
-          Price: "DESC"
-        }
-    })
+    //   const cars = await AppDataSource.getRepository(Car).find({
+    //     relations: {
+    //         carPhoto: true,
+    //     },
+    //     order: {
+    //       Price: "DESC"
+    //     }
+    // })
+    const cars = await AppDataSource.manager
+    // .query(`SELECT *,"car"."id" AS "car_id" FROM "car" LEFT JOIN "car_photo" ON "carPhotoId"="car_photo"."id"`)
+      .query(`SELECT
+      "car"."id" AS "Car_id",
+      "car"."Name" AS "Car_Name",
+      "car"."Brand" AS "Car_Brand",
+      "car"."Model" AS "Car_Model",
+      "car"."Price" AS "Car_Price",
+      "car"."Alt" AS "Car_Alt",
+      "car"."Description" AS "Car_Description",
+      "car"."carPhotoId" AS "Car_carPhotoId",
+      "car_photo"."Url" AS "Car_Photo_Url",
+      "car_photo"."Name" AS "Car_Photo_Name",
+      "car_photo"."Key" AS "Car_Photo_key",
+      "car_photo"."id" AS "Car_Photo_Id"
+      FROM "car" LEFT JOIN "car_photo" ON "carPhotoId"="car_photo"."id"`)
+ 
       return res.status(200).json(cars)
     },
 
@@ -110,8 +127,21 @@ export const carController = {
       if(!search) return res.status(400).json({error:"Carro nao informado!!"})
 
       const cars = await AppDataSource.manager
-      .query(`SELECT * FROM car WHERE "Name" LIKE '%${search}%' 
-      OR "Brand" LIKE '%${search}%' OR "Model" LIKE '%${search}%'`)
+      .query(`SELECT
+      "car"."id" AS "Car_id",
+      "car"."Name" AS "Car_Name",
+      "car"."Brand" AS "Car_Brand",
+      "car"."Model" AS "Car_Model",
+      "car"."Price" AS "Car_Price",
+      "car"."Description" AS "Car_Description",
+      "car"."Alt" AS "Car_Alt",
+      "car"."carPhotoId" AS "Car_carPhotoId",
+      "car_photo"."Url" AS "Car_Photo_Url",
+      "car_photo"."Name" AS "Car_Photo_Name",
+      "car_photo"."Key" AS "Car_Photo_key",
+      "car_photo"."id" AS "Car_Photo_Id"
+      FROM "car" LEFT JOIN "car_photo" ON "car_photo"."id"="carPhotoId" WHERE "car"."Name" LIKE '%${search}%' 
+      OR "car"."Brand" LIKE '%${search}%' OR "car"."Model" LIKE '%${search}%'`)
       return res.status(200).json(cars)
     },
 
