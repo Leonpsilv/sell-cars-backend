@@ -3,7 +3,6 @@ import {config} from 'dotenv'
 config()
 
 import { UserAdmin } from "./entity/UserAdmin"
-import { fixUserColumn1677683113088 } from "./migration/1677683113088-fixUserColumn"
 import { addUserRole1677769862111 } from "./migration/1677769862111-addUserRole"
 import { Car } from "./entity/Car"
 import { CarPhoto } from "./entity/CarPhoto"
@@ -29,7 +28,6 @@ export const AppDataSource: DataSource = new DataSource({
         CarPhoto
     ],
     migrations: [
-        fixUserColumn1677683113088,
         addUserRole1677769862111,
         changeCarPhotoColumnName1677793535972,
         addCarColumn1677857365100,

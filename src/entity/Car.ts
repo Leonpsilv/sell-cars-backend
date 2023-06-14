@@ -7,22 +7,22 @@ export class Car {
     id!: number
 
     @Column()
-    Name!: string
+    name!: string
 
     @Column()
-    Brand!: string
+    brand!: string
 
     @Column()
-    Model!: string
+    model!: string
 
     @Column()
-    Price!: number
+    price!: number
 
     @Column()
-    Description!: string
+    description!: string
 
     @Column({ length: 100, default:"--"})
-    Alt!: string
+    alt!: string
 
     @OneToOne(() => CarPhoto)
     @JoinColumn()

@@ -6,11 +6,11 @@ export class CarPhoto{
     id!: number
 
     @Column()
-    Name!: string
+    name!: string
     
     @Column()
-    Url!: string
+    url!: string
 
     @Column({ length: 255, default: "--"})
-    Key!: string
+    key!: string
 }

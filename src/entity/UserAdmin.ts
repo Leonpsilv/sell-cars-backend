@@ -6,17 +6,17 @@ export class UserAdmin {
     id!: number
 
     @Column()
-    Name!: string
+    name!: string
 
     @Column()
-    Password!: string
+    password!: string
 
     @Column()
-    Email!: string
+    email!: string
 
     @Column()
-    Cpf!: string
+    cpf!: string
 
     @Column("varchar", { length: 150, default: "--"})
-    Role?: string
+    role?: string
 }
