@@ -16,3 +16,4 @@ routes.use("/admin", authService, adminRoutes);
 routes.post("/login", publicController.login);
 routes.get("/carros", carController.getAllCars);
 routes.get("/carros/pesquisa/:search", carController.getCarsBySearch);
+routes.get("/carros/pesquisaPorPreco", carController.getCarsByPrice);

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../dataSource";
 import { Car } from "../entity/Car";
 import { CarPhoto } from "../entity/CarPhoto";
+import { errorConvert } from "../core/error";
 
 export const carController = {
   async carPhoto(req: Request | any, res: Response) {
@@ -19,14 +20,16 @@ export const carController = {
         const car = await AppDataSource.getRepository(Car).findOneBy({
           id: carId,
         });
-        if (!car) return res.status(400).json({ error: "id inválido" });
-        car.carPhoto = photo;
-        await AppDataSource.manager.save(car).then((car) => {
-          return res.status(200).json(car);
-        });
+        if (car) {
+          car.carPhoto = photo;
+          await AppDataSource.manager.save(car).then((car) => {
+            return res.status(200).json(car);
+          });
+        }
+        errorConvert(res, 400, "id inválido");
       })
       .catch((e) => {
-        return res.status(400).json(e);
+        errorConvert(res, 400, "Falha ao salvar carro", e);
       });
   },
 
@@ -35,7 +38,7 @@ export const carController = {
     const results = await AppDataSource.getRepository(Car)
       .save(car)
       .catch((e) => {
-        return res.status(400).json({ error: e });
+        errorConvert(res, 400, "Falha ao salvar carro", e);
       });
     return res.status(200).json(results);
   },
@@ -78,7 +81,7 @@ export const carController = {
 
   async getCar(req: Request, res: Response) {
     const id = Number(req.params.carId);
-    if (!id) return res.status(400).json({ error: "Carro nao informado" });
+    if (!id) errorConvert(res, 400, "Carro não informado");
 
     const car = await AppDataSource.getRepository(Car).findOne({
       relations: {
@@ -88,50 +91,38 @@ export const carController = {
         id,
       },
     });
-    if (!car) return res.status(400).json({ error: "id invalido" });
+    if (!car) errorConvert(res, 400, "id inválido");
 
     return res.status(200).json(car);
   },
 
   async editCar(req: Request, res: Response) {
     const id = Number(req.params.carId);
-    const { Name, Brand, Model, Price, Description, Alt } = req.body;
-
-    if (!id) return res.status(400).json({ error: "Carro nao informado" });
-
+    const { name, brand, model, price, description, alt } = req.body;
+    if (!id) errorConvert(res, 400, "Carro não informado");
     const car = await AppDataSource.getRepository(Car).findOneBy({ id });
-    if (!car) return res.status(400).json({ error: "Carro não encontrado" });
-    if (Name) {
-      car.name = Name;
-    }
-    if (Brand) {
-      car.brand = Brand;
-    }
-    if (Description) {
-      car.description = Description;
-    }
-    if (Model) {
-      car.model = Model;
-    }
-    if (Price) {
-      car.price = Price;
-    }
-    if (Alt) {
-      car.alt = Alt;
-    }
+    if (car) {
+      car.name = name ? name : car.name;
+      car.brand = brand ? brand : car.brand;
+      car.model = model ? model : car.model;
+      car.price = price ? price : car.price;
+      car.description = description ? description : car.description;
+      car.alt = alt ? alt : car.alt;
 
-    const result = await AppDataSource.getRepository(Car)
-      .save(car)
-      .catch((e) => {
-        return res.status(400).json(e);
-      });
+      const result = await AppDataSource.getRepository(Car)
+        .save(car)
+        .catch((e) => {
+          errorConvert(res, 400, "Falha ao salvar carro", e);
+        });
 
-    return res.status(200).json(result);
+      return res.status(200).json(result);
+    }
+    errorConvert(res, 400, "Carro não encontrado!");
   },
 
   async deleteCar(req: Request, res: Response) {
     const id = Number(req.params.carId);
-    if (!id) return res.status(400).json({ error: "Carro nao informado" });
+    if (!id) errorConvert(res, 400, "Carro não informado!");
 
     const results = AppDataSource.getRepository(Car).delete({ id });
 
@@ -140,8 +131,7 @@ export const carController = {
 
   async getCarsBySearch(req: Request, res: Response) {
     const { search } = req.params;
-    if (!search)
-      return res.status(400).json({ error: "Carro nao informado!!" });
+    if (!search) errorConvert(res, 400, "Carro nao informado!");
 
     const cars = await AppDataSource.manager.query(`SELECT
         "car"."id" AS "Car_id",
@@ -163,23 +153,29 @@ export const carController = {
         "car"."description" LIKE '%${search}%'
       `);
 
-      const carsDto = cars.map((car: any) => ({
-        id: car.Car_id,
-        name: car.Car_Name,
-        brand: car.Car_Brand,
-        model: car.Car_Model,
-        price: car.Car_Price,
-        alt: car.Car_Alt,
-        description: car.Car_Description,
-        imageId: car.Car_carPhotoId,
-        image: {
-          url: car.Car_Photo_Url,
-          name: car.Car_Photo_Name,
-          key: car.Car_Photo_key,
-          id: car.Car_Photo_Id,
-        },
-      }));
+    const carsDto = cars.map((car: any) => ({
+      id: car.Car_id,
+      name: car.Car_Name,
+      brand: car.Car_Brand,
+      model: car.Car_Model,
+      price: car.Car_Price,
+      alt: car.Car_Alt,
+      description: car.Car_Description,
+      imageId: car.Car_carPhotoId,
+      image: {
+        url: car.Car_Photo_Url,
+        name: car.Car_Photo_Name,
+        key: car.Car_Photo_key,
+        id: car.Car_Photo_Id,
+      },
+    }));
 
     return res.status(200).json(carsDto);
+  },
+
+  async getCarsByPrice(req: Request, res: Response) {
+    const { price } = req.body;
+    if (!price) errorConvert(res, 400, "um preço deve ser informado!");
+    return res.status(200).json({ msg: "tamo aqui prc" });
   },
 };
