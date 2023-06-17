@@ -3,6 +3,7 @@ import { AppDataSource } from "../dataSource";
 import { Car } from "../entity/Car";
 import { CarPhoto } from "../entity/CarPhoto";
 import { errorConvert } from "../core/error";
+import { Seller } from "../entity/Seller";
 
 export const carController = {
   async carPhoto(req: Request | any, res: Response) {
@@ -14,33 +15,50 @@ export const carController = {
     photo.url = url;
     photo.key = key;
 
-    await AppDataSource.manager
-      .save(photo)
-      .then(async (photo) => {
-        const car = await AppDataSource.getRepository(Car).findOneBy({
-          id: carId,
-        });
-        if (car) {
+    const car = await AppDataSource.getRepository(Car).findOneBy({
+      id: carId,
+    });
+
+    if (car) {
+      await AppDataSource.manager
+        .save(photo)
+        .then(async (photo) => {
           car.carPhoto = photo;
           await AppDataSource.manager.save(car).then((car) => {
             return res.status(200).json(car);
           });
-        }
-        errorConvert(res, 400, "id inválido");
-      })
-      .catch((e) => {
-        errorConvert(res, 400, "Falha ao salvar carro", e);
-      });
-  },
+        })
+        .catch((e) => {
+          errorConvert(res, 400, "Falha ao salvar imagem", e);
+        });
+      }
+      errorConvert(res, 400, "id informado não é válido");
+    },
 
   async newCar(req: Request, res: Response) {
-    const car = AppDataSource.getRepository(Car).create(req.body);
-    const results = await AppDataSource.getRepository(Car)
-      .save(car)
-      .catch((e) => {
-        errorConvert(res, 400, "Falha ao salvar carro", e);
-      });
-    return res.status(200).json(results);
+    const {name, brand, model, price, year, description, alt, sellerEmail} = req.body
+    const carDto = {
+      name,
+      brand,
+      model,
+      price,
+      year,
+      description,
+      alt
+    }
+    const car = AppDataSource.getRepository(Car).create(carDto);
+    const seller = await AppDataSource.getRepository(Seller).findOneBy({email: sellerEmail})
+    if (seller){
+      car.seller = seller
+      const results = await AppDataSource.getRepository(Car)
+        .save(car)
+        .catch((e) => {
+          errorConvert(res, 400, "Falha ao salvar carro", e);
+        });
+  
+      return res.status(200).json(results);
+    }
+    errorConvert(res, 400, 'vendedor não encontrado')
   },
 
   async getAllCars(req: Request, res: Response) {
