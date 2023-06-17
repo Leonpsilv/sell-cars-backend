@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import { config } from "dotenv";
-import { routes } from "./routes";
+import { router } from "./routes";
 import { AppDataSource } from "./dataSource";
 import cors from "cors";
 import "reflect-metadata";
@@ -10,7 +10,7 @@ const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use("/api", routes);
+app.use("/api", router);
 
 AppDataSource.initialize()
   .then(() => {
