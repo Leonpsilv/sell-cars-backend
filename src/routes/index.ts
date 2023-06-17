@@ -1,18 +1,9 @@
 import { Router } from "express";
 import { authService } from "../services/auth/authService";
-import { publicController } from "../controllers/publicController";
-import { adminRoutes } from "./admin";
-import { carController } from "../controllers/carController";
+import { routes as adminRoutes } from "./admin";
+import { routes as publicRoutes } from "./public";
 
-export const routes: Router = Router();
+export const router: Router = Router();
 
-routes.use("/admin", authService, adminRoutes);
-
-
-//  acessar catálogo de carros
-// 	acessar mais informações de carro específico
-// 	entrar em contato com vendedor
-
-routes.post("/login", publicController.login);
-routes.get("/carros", carController.getAllCars);
-routes.get("/carros/pesquisa/:search", carController.getCarsBySearch);
+router.use(publicRoutes);
+router.use("/admin", authService, adminRoutes);
